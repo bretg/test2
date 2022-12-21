@@ -1,0 +1,15 @@
+name: Remote Dispatch Send Action
+
+on:
+  merge_group:
+
+jobs:
+  cross-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SEND - Dispatch repository event
+        run: |
+          curl -X POST https://api.github.com/repos/bretg/test1/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u ${{ secrets.CROSSREPO_TOKEN }} \
+          --data '{"event_type": "merge", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'

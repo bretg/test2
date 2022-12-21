@@ -1,0 +1,14 @@
+name: Remote Dispatch Receive Action
+
+on:
+  repository_dispatch:
+
+jobs:
+  cross-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: RECEIVE - the other repo is contacting us. Create an issue.
+        if: github.event.action == 'merge'
+        run: |
+          echo "Received from '${{ github.event.client_payload.repository }}'" && \
+          curl -X GET https://github.com/bretg/test2/issues/new?title=New+issue&body=A+PR+was+opened+against+${{ github.event.client_payload.repository }}
